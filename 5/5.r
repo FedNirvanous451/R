@@ -15,7 +15,7 @@ print(spearman_corr)
 
 # Визуализация корреляции Пирсона
 library(ggcorrplot)
-print(ggcorrplot(pearson_corr, lab = TRUE, title = "Корреляционная матрица Пирсона"))
+ggcorrplot(pearson_corr, lab = TRUE, title = "Корреляционная матрица Пирсона")
 
 model <- lm(BPM ~ RMS.Energy, data = df)
 print(summary(model))

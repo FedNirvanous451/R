@@ -16,9 +16,10 @@ r2_val <- cor(df$Zero.Crossing.Rate, predictions) ^ 2
 print(paste("MSE =", mse_val))
 print(paste("R^2 =", r2_val))
 
-print(plot(df$Zero.Crossing.Rate, predictions, xlab = "Реальные значение (Y) ",
+library(ggplot2)
+ggplot2(df$Zero.Crossing.Rate, predictions, xlab = "Реальные значение (Y) ",
 ylab = "Предсказанные значения (Y_pred) ",
-main = "Реальные vs. Предсказанные"))
+main = "Реальные vs. Предсказанные")
 abline(a=0, b=1, col="yellow")
 
 print(plot(model))
