@@ -15,7 +15,7 @@ genre_mapping <- data.frame(
 music_data <- merge(music_data, genre_mapping, by = "Жанр", all.x = TRUE)
 
 # Переименовываем колонку
-names(music_data)[names(music_data) == "Код"] <- "Жанр_код"
+names(music_data)[names(music_data) == "Код"] <- "Код Жанра"
 
 # Сохраняем преобразованный датасет
 write.csv(music_data, "music_data_encoded.csv", row.names = FALSE)
@@ -23,5 +23,27 @@ write.csv(music_data, "music_data_encoded.csv", row.names = FALSE)
 # Сохраняем таблицу соответствия
 write.csv(genre_mapping, "genre_mapping.csv", row.names = FALSE)
 
-# Выводим первые строки для проверки
-print(head(music_data))
+library(e1071)
+library(caret)
+library(rql)
+
+data_music <- read.csv("D:/Documents/Learning/3/R/music_data_encoded.csv")
+
+# 3. Разделение на обучающую и тестовую выборки
+set.seed(123)
+trainIndex <- createDataPartition(data_music$Код.Жанра, p = 0.8, list = FALSE)
+train <- data_music[trainIndex, ]
+test <- data_music[-trainIndex, ]
+
+# 4. Обучение модели SVM
+svm_model <- svm(Код.Жанра ~ BPM + RMS.Energy + Zero.Crossing.Rate, 
+                 data = train,
+                 kernel = "radial",  # Радиальное ядро
+                 scale = TRUE,       # Масштабирование признаков
+                 probability = TRUE) # Для получения вероятностей
+
+# Предсказание
+predictions <- predict(model, mtcars)
+confusionMatrix(predictions, test$Код.Жанра)
+# Оценка точности
+table(predictions, test$Код.Жанра)
