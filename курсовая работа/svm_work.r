@@ -27,7 +27,7 @@ library(e1071)
 library(caret)
 library(rgl)
 
-data_music <- read.csv("D:/Documents/Learning/3/R/music_data_encoded.csv")
+data_music <- read.csv("D:/Documents/Learning/3/R/music_dataset.csv")
 
 # 3. Разделение на обучающую и тестовую выборки
 set.seed(123) # для воспроизводимости
