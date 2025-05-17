@@ -51,3 +51,4 @@ print(f1_score)
 cat("\nСредний Precision:", mean(precision), "\n")
 cat("Средний Recall:", mean(recall), "\n")
 cat("Средний F1-Score:", mean(f1_score), "\n")
+

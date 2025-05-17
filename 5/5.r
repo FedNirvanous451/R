@@ -6,7 +6,6 @@ df <- read.csv("D:/Documents/Learning/3/R/ff.csv")
 # Вычисление корреляций
 pearson_corr <- cor(df, method = "pearson")
 spearman_corr <- cor(df, method = "spearman")
-
 # Вывод результатов
 cat("Корреляция Пирсона:\n")
 print(pearson_corr)
