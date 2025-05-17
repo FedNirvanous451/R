@@ -1,33 +1,8 @@
-library(readr)
-music_data <- read.csv("D:/Documents/Learning/3/R/music_genre_dataset.csv")
-
-# Проверим уникальные жанры в данных
-unique_genres <- unique(music_data$Жанр)
-print(unique_genres)
-
-# Создаем числовые коды для каждого жанра
-genre_mapping <- data.frame(
-  Жанр = c("рок", "хип-хоп", "поп"),  # именно в таком порядке
-  Код = 0:2
-)
-
-# Объединяем с исходными данными
-music_data <- merge(music_data, genre_mapping, by = "Жанр", all.x = TRUE)
-
-# Переименовываем колонку
-names(music_data)[names(music_data) == "Код"] <- "Код.Жанра"
-
-# Сохраняем преобразованный датасет
-write.csv(music_data, "music_data_encoded.csv", row.names = FALSE)
-
-# Сохраняем таблицу соответствия
-write.csv(genre_mapping, "genre_mapping.csv", row.names = FALSE)
-
 library(e1071)
 library(caret)
 library(rgl)
 
-data_music <- read.csv("D:/Documents/Learning/3/R/music_dataset.csv")
+data_music <- read.csv("D:/Documents/Learning/3/R/ff.csv")
 
 # 3. Разделение на обучающую и тестовую выборки
 set.seed(123) # для воспроизводимости
@@ -42,7 +17,7 @@ test$Код.Жанра <- factor(test$Код.Жанра, levels = levels(train$�
 
 # 4. Обучение модели SVM
 svm_model <- svm(Код.Жанра ~ BPM + RMS.Energy + Zero.Crossing.Rate
-+ Инструментальность + Вокал,
+                 + Инструментальность + Вокал,
                  data = train,
                  kernel = "radial",  # Радиальное ядро
                  scale = TRUE,       # Масштабирование признаков
@@ -55,5 +30,24 @@ predictions <- predict(svm_model, test)
 predictions <- factor(predictions, levels = levels(train$Код.Жанра))
 
 # Матрица ошибок
+conf_matrix <- confusionMatrix(predictions, test$Код.Жанра)
 print("Матрица ошибок:")
-print(confusionMatrix(predictions, test$Код.Жанра))
+print(conf_matrix)
+
+# Извлечение Precision, Recall и F1-Score
+precision <- conf_matrix$byClass[, "Precision"]
+recall <- conf_matrix$byClass[, "Recall"]
+f1_score <- conf_matrix$byClass[, "F1"]
+
+# Вывод результатов
+cat("Precision:\n")
+print(precision)
+cat("\nRecall:\n")
+print(recall)
+cat("\nF1-Score:\n")
+print(f1_score)
+
+# Вывод средних значений
+cat("\nСредний Precision:", mean(precision), "\n")
+cat("Средний Recall:", mean(recall), "\n")
+cat("Средний F1-Score:", mean(f1_score), "\n")
