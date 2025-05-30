@@ -3,6 +3,12 @@ library(caret)
 library(rgl)
 
 data_music <- read.csv("D:/Documents/Learning/3/R/ff.csv")
+data_musica <- read.csv("D:/Documents/Learning/3/R/music_dataset.csv")
+print(ggplot(data_musica, aes(x = BPM, y = Инструментальность, color = Жанр)) +
+geom_point(alpha = 1, , size = 3) +
+scale_color_manual(values = c("рок" = "red", "хип-хоп" = "darkblue", "поп" = "#1f5a1f")) +
+labs(title = "Диаграмма рассеяния для BPM и Инструментальности", 
+x = "BPM", y = "Инструментальность"))
 
 # 3. Разделение на обучающую и тестовую выборки
 set.seed(123) # для воспроизводимости
